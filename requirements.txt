@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Veritas: Enterprise Knowledge Graph & Graph RAG Platform
+# Phase 1 dependencies
+# ---------------------------------------------------------------------------
+
+# --- Core graph database driver ---
+neo4j==5.24.0
+
+# --- LLM / Orchestration frameworks ---
+langchain==0.3.7
+langchain-core==0.3.15
+langchain-community==0.3.5
+langchain-openai==0.2.5
+langchain-experimental==0.3.3          # provides LLMGraphTransformer
+
+# --- Embeddings (choose one at runtime via config) ---
+openai==1.54.3
+sentence-transformers==3.2.1
+
+# --- NLP fallback extraction ---
+spacy==3.8.2
+
+# --- Document loading & parsing ---
+pypdf==5.1.0                            # PDF text extraction
+unstructured==0.16.5                    # general unstructured loaders
+markdown-it-py==3.0.0                   # markdown parsing
+
+# --- Utilities ---
+python-dotenv==1.0.1                    # load .env configuration
+pydantic==2.9.2                         # typed settings & data models
+pydantic-settings==2.6.1
+tenacity==9.0.0                         # retry logic for LLM/DB calls
+tqdm==4.67.0                            # progress bars for ingestion
