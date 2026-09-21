@@ -1,0 +1,27 @@
+{
+  "dataset": "veritas_sample_enterprise_docs",
+  "description": "Synthetic enterprise documents for Veritas Phase 1 ingestion demos. Entirely fictional; any resemblance to real people or companies is coincidental.",
+  "documents": [
+    {
+      "id": "doc::arch-update-atlas",
+      "name": "atlas_architecture_update.md",
+      "source": "confluence/engineering/atlas/architecture-update",
+      "doc_type": "markdown",
+      "content": "# Project Atlas - Architecture Update (Q3)\n\nAuthor: Priya Nair (Principal Engineer, Platform Team)\n\n## Summary\n\nProject Atlas is our new enterprise knowledge platform. Over the last quarter the Platform Team migrated Atlas from a monolithic Django service to a set of Python microservices. Priya Nair led the migration together with Marcus Feld, who owns the data ingestion service.\n\n## Key Technology Decisions\n\nWe adopted Neo4j as the primary graph store for Atlas because our access patterns are relationship-heavy. We use the neo4j Python driver for all data access. For semantic search we standardised on SentenceTransformers embeddings stored directly in Neo4j vector indexes.\n\nThe team also introduced LangChain to orchestrate the retrieval-augmented generation pipeline. Marcus Feld prototyped the extraction service using the LLMGraphTransformer component.\n\n## Decision Log\n\nDecision D-114: Adopt Neo4j as the system of record for the knowledge graph. This decision affects Project Atlas directly and supersedes the earlier PostgreSQL proposal.\n\nDecision D-118: Use SentenceTransformers for embeddings in the near term to avoid external API dependencies, revisiting OpenAI embeddings once the budget is approved. This affects Project Atlas.\n"
+    },
+    {
+      "id": "doc::launch-email-atlas",
+      "name": "atlas_launch_announcement_email.txt",
+      "source": "email/announcements/atlas-beta-launch",
+      "doc_type": "email",
+      "content": "From: Priya Nair <priya.nair@example-corp.com>\nTo: engineering-all@example-corp.com\nSubject: Project Atlas Beta is Live\n\nHi everyone,\n\nI am thrilled to announce that Project Atlas has entered beta. The Platform Team has been working on this for two quarters and it is finally ready for internal users.\n\nAtlas is built on Neo4j and uses LangChain for its Graph RAG pipeline. Marcus Feld and Diana Okoro drove the ingestion and retrieval work respectively. Diana Okoro is our resident expert in Python and SentenceTransformers, and she tuned the vector search layer.\n\nThe Data Platform Team owns Project Atlas going forward. If you want to contribute, Marcus Feld is coordinating onboarding.\n\nThanks to everyone involved.\n\nBest,\nPriya\n"
+    },
+    {
+      "id": "doc::issue-atlas-ingestion",
+      "name": "ATLAS-231_ingestion_timeout.txt",
+      "source": "jira/ATLAS-231",
+      "doc_type": "ticket",
+      "content": "Issue: ATLAS-231\nTitle: Ingestion pipeline times out on large PDF batches\nSeverity: High\nStatus: Open\nReporter: Diana Okoro\nAssignee: Marcus Feld\n\nDescription:\nThe Atlas ingestion pipeline times out when processing PDF batches larger than 500 documents. The bottleneck appears to be synchronous embedding generation with SentenceTransformers before writes to Neo4j.\n\nImpact:\nThis issue blocks Project Atlas from reaching general availability, since enterprise customers routinely upload thousands of PDFs. The Data Platform Team has flagged it as a launch blocker.\n\nProposed fix:\nBatch the embedding calls and write to Neo4j asynchronously. Marcus Feld is investigating a queue-based approach.\n"
+    }
+  ]
+}
