@@ -68,6 +68,20 @@ All configuration is environment-driven (see `.env.example`). Key toggles:
 - `VERITAS_EMBEDDING_BACKEND` — `openai` or `sentence_transformers`
 - `VERITAS_EMBEDDING_DIMENSION` — must match the embedding model output
 
+## Visual Dashboard (no Neo4j required)
+
+For a zero-setup visual walkthrough of the pipeline output, run the interactive
+dashboard. It shows the extracted knowledge graph (physics-based, colour-coded,
+clickable), the source documents, and a live Graph RAG query demo — using only
+the Python standard library.
+
+```bash
+python3 demo/serve_dashboard.py
+# opens http://127.0.0.1:8000/dashboard.html
+```
+
+See [`demo/README.md`](demo/README.md) for details.
+
 ## Verification & Explainability (Section 5)
 
 After ingestion, verify graph connectivity with the queries in

@@ -1,0 +1,601 @@
+{
+  "generated_at": "2026-09-21T05:13:39.332388+00:00",
+  "dataset": "veritas_sample_enterprise_docs",
+  "legend": {
+    "Person": {
+      "color": "#4C9AFF",
+      "shape": "dot"
+    },
+    "Project": {
+      "color": "#F5A623",
+      "shape": "diamond"
+    },
+    "Technology": {
+      "color": "#36B37E",
+      "shape": "square"
+    },
+    "Team": {
+      "color": "#9F7AEA",
+      "shape": "triangle"
+    },
+    "Decision": {
+      "color": "#FF8B00",
+      "shape": "star"
+    },
+    "Issue": {
+      "color": "#FF5630",
+      "shape": "hexagon"
+    },
+    "Document": {
+      "color": "#8993A4",
+      "shape": "database"
+    }
+  },
+  "documents": [
+    {
+      "id": "doc::arch-update-atlas",
+      "name": "atlas_architecture_update.md",
+      "source": "confluence/engineering/atlas/architecture-update",
+      "doc_type": "markdown",
+      "content": "# Project Atlas - Architecture Update (Q3)\n\nAuthor: Priya Nair (Principal Engineer, Platform Team)\n\n## Summary\n\nProject Atlas is our new enterprise knowledge platform. Over the last quarter the Platform Team migrated Atlas from a monolithic Django service to a set of Python microservices. Priya Nair led the migration together with Marcus Feld, who owns the data ingestion service.\n\n## Key Technology Decisions\n\nWe adopted Neo4j as the primary graph store for Atlas because our access patterns are relationship-heavy. We use the neo4j Python driver for all data access. For semantic search we standardised on SentenceTransformers embeddings stored directly in Neo4j vector indexes.\n\nThe team also introduced LangChain to orchestrate the retrieval-augmented generation pipeline. Marcus Feld prototyped the extraction service using the LLMGraphTransformer component.\n\n## Decision Log\n\nDecision D-114: Adopt Neo4j as the system of record for the knowledge graph. This decision affects Project Atlas directly and supersedes the earlier PostgreSQL proposal.\n\nDecision D-118: Use SentenceTransformers for embeddings in the near term to avoid external API dependencies, revisiting OpenAI embeddings once the budget is approved. This affects Project Atlas.\n"
+    },
+    {
+      "id": "doc::launch-email-atlas",
+      "name": "atlas_launch_announcement_email.txt",
+      "source": "email/announcements/atlas-beta-launch",
+      "doc_type": "email",
+      "content": "From: Priya Nair <priya.nair@example-corp.com>\nTo: engineering-all@example-corp.com\nSubject: Project Atlas Beta is Live\n\nHi everyone,\n\nI am thrilled to announce that Project Atlas has entered beta. The Platform Team has been working on this for two quarters and it is finally ready for internal users.\n\nAtlas is built on Neo4j and uses LangChain for its Graph RAG pipeline. Marcus Feld and Diana Okoro drove the ingestion and retrieval work respectively. Diana Okoro is our resident expert in Python and SentenceTransformers, and she tuned the vector search layer.\n\nThe Data Platform Team owns Project Atlas going forward. If you want to contribute, Marcus Feld is coordinating onboarding.\n\nThanks to everyone involved.\n\nBest,\nPriya\n"
+    },
+    {
+      "id": "doc::issue-atlas-ingestion",
+      "name": "ATLAS-231_ingestion_timeout.txt",
+      "source": "jira/ATLAS-231",
+      "doc_type": "ticket",
+      "content": "Issue: ATLAS-231\nTitle: Ingestion pipeline times out on large PDF batches\nSeverity: High\nStatus: Open\nReporter: Diana Okoro\nAssignee: Marcus Feld\n\nDescription:\nThe Atlas ingestion pipeline times out when processing PDF batches larger than 500 documents. The bottleneck appears to be synchronous embedding generation with SentenceTransformers before writes to Neo4j.\n\nImpact:\nThis issue blocks Project Atlas from reaching general availability, since enterprise customers routinely upload thousands of PDFs. The Data Platform Team has flagged it as a launch blocker.\n\nProposed fix:\nBatch the embedding calls and write to Neo4j asynchronously. Marcus Feld is investigating a queue-based approach.\n"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "doc::arch-update-atlas",
+      "label": "Document",
+      "name": "atlas_architecture_update.md",
+      "properties": {
+        "source": "confluence/engineering/atlas/architecture-update",
+        "doc_type": "markdown"
+      },
+      "color": "#8993A4",
+      "shape": "database",
+      "source_docs": []
+    },
+    {
+      "id": "person::priya-nair",
+      "label": "Person",
+      "name": "Priya Nair",
+      "properties": {
+        "role": "Principal Engineer"
+      },
+      "color": "#4C9AFF",
+      "shape": "dot",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "person::marcus-feld",
+      "label": "Person",
+      "name": "Marcus Feld",
+      "properties": {
+        "role": "Ingestion Service Owner"
+      },
+      "color": "#4C9AFF",
+      "shape": "dot",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "project::project-atlas",
+      "label": "Project",
+      "name": "Project Atlas",
+      "properties": {
+        "status": "Beta"
+      },
+      "color": "#F5A623",
+      "shape": "diamond",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "technology::neo4j",
+      "label": "Technology",
+      "name": "Neo4j",
+      "properties": {
+        "category": "Graph Database"
+      },
+      "color": "#36B37E",
+      "shape": "square",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "technology::langchain",
+      "label": "Technology",
+      "name": "LangChain",
+      "properties": {
+        "category": "LLM Framework"
+      },
+      "color": "#36B37E",
+      "shape": "square",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "technology::sentencetransformers",
+      "label": "Technology",
+      "name": "SentenceTransformers",
+      "properties": {
+        "category": "Embeddings"
+      },
+      "color": "#36B37E",
+      "shape": "square",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "technology::python",
+      "label": "Technology",
+      "name": "Python",
+      "properties": {
+        "category": "Language"
+      },
+      "color": "#36B37E",
+      "shape": "square",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "team::platform-team",
+      "label": "Team",
+      "name": "Platform Team",
+      "properties": {},
+      "color": "#9F7AEA",
+      "shape": "triangle",
+      "source_docs": [
+        "doc::arch-update-atlas",
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "decision::decision-d-114",
+      "label": "Decision",
+      "name": "Decision D-114",
+      "properties": {
+        "summary": "Adopt Neo4j as system of record"
+      },
+      "color": "#FF8B00",
+      "shape": "star",
+      "source_docs": [
+        "doc::arch-update-atlas"
+      ]
+    },
+    {
+      "id": "decision::decision-d-118",
+      "label": "Decision",
+      "name": "Decision D-118",
+      "properties": {
+        "summary": "Use SentenceTransformers for embeddings"
+      },
+      "color": "#FF8B00",
+      "shape": "star",
+      "source_docs": [
+        "doc::arch-update-atlas"
+      ]
+    },
+    {
+      "id": "doc::launch-email-atlas",
+      "label": "Document",
+      "name": "atlas_launch_announcement_email.txt",
+      "properties": {
+        "source": "email/announcements/atlas-beta-launch",
+        "doc_type": "email"
+      },
+      "color": "#8993A4",
+      "shape": "database",
+      "source_docs": []
+    },
+    {
+      "id": "person::diana-okoro",
+      "label": "Person",
+      "name": "Diana Okoro",
+      "properties": {
+        "role": "Retrieval Engineer"
+      },
+      "color": "#4C9AFF",
+      "shape": "dot",
+      "source_docs": [
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "team::data-platform-team",
+      "label": "Team",
+      "name": "Data Platform Team",
+      "properties": {},
+      "color": "#9F7AEA",
+      "shape": "triangle",
+      "source_docs": [
+        "doc::issue-atlas-ingestion",
+        "doc::launch-email-atlas"
+      ]
+    },
+    {
+      "id": "doc::issue-atlas-ingestion",
+      "label": "Document",
+      "name": "ATLAS-231_ingestion_timeout.txt",
+      "properties": {
+        "source": "jira/ATLAS-231",
+        "doc_type": "ticket"
+      },
+      "color": "#8993A4",
+      "shape": "database",
+      "source_docs": []
+    },
+    {
+      "id": "issue::atlas-231",
+      "label": "Issue",
+      "name": "ATLAS-231",
+      "properties": {
+        "severity": "High",
+        "status": "Open"
+      },
+      "color": "#FF5630",
+      "shape": "hexagon",
+      "source_docs": [
+        "doc::issue-atlas-ingestion"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "person::priya-nair",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "person::marcus-feld",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::neo4j",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::langchain",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::sentencetransformers",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::python",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "team::platform-team",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "decision::decision-d-114",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::arch-update-atlas",
+      "relationship": "MENTIONS",
+      "target": "decision::decision-d-118",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::priya-nair",
+      "relationship": "WORKS_ON",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::marcus-feld",
+      "relationship": "WORKS_ON",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::priya-nair",
+      "relationship": "MEMBER_OF",
+      "target": "team::platform-team",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::marcus-feld",
+      "relationship": "MEMBER_OF",
+      "target": "team::platform-team",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::marcus-feld",
+      "relationship": "HAS_SKILL",
+      "target": "technology::langchain",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "person::priya-nair",
+      "relationship": "HAS_SKILL",
+      "target": "technology::neo4j",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "team::platform-team",
+      "relationship": "OWNS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "project::project-atlas",
+      "relationship": "USES",
+      "target": "technology::neo4j",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "project::project-atlas",
+      "relationship": "USES",
+      "target": "technology::langchain",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "project::project-atlas",
+      "relationship": "USES",
+      "target": "technology::sentencetransformers",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "decision::decision-d-114",
+      "relationship": "AFFECTS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "decision::decision-d-118",
+      "relationship": "AFFECTS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "person::priya-nair",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "person::marcus-feld",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "person::diana-okoro",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::neo4j",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::langchain",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::sentencetransformers",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "technology::python",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "team::platform-team",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::launch-email-atlas",
+      "relationship": "MENTIONS",
+      "target": "team::data-platform-team",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "person::diana-okoro",
+      "relationship": "WORKS_ON",
+      "target": "project::project-atlas",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "person::diana-okoro",
+      "relationship": "HAS_SKILL",
+      "target": "technology::sentencetransformers",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "person::diana-okoro",
+      "relationship": "HAS_SKILL",
+      "target": "technology::python",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "team::data-platform-team",
+      "relationship": "OWNS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "person::marcus-feld",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "person::diana-okoro",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "technology::neo4j",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "technology::sentencetransformers",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "team::platform-team",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "team::data-platform-team",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "doc::issue-atlas-ingestion",
+      "relationship": "MENTIONS",
+      "target": "issue::atlas-231",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "source": "issue::atlas-231",
+      "relationship": "BLOCKS",
+      "target": "project::project-atlas",
+      "source_doc": "doc::issue-atlas-ingestion"
+    }
+  ],
+  "chunks": [
+    {
+      "id": "doc::arch-update-atlas::chunk-0::1143a5be4b",
+      "document_id": "doc::arch-update-atlas",
+      "chunk_index": 0,
+      "text": "# Project Atlas - Architecture Update (Q3)\n\nAuthor: Priya Nair (Principal Engineer, Platform Team)\n\n## Summary\n\nProject Atlas is our new enterprise knowledge platform. Over the last quarter the Platform Team migrated Atlas from a monolithic Django service to a set of Python microservices. Priya Nair led the migration together with Marcus Feld, who owns the data ingestion service.\n\n## Key Technology Decisions\n\nWe adopted Neo4j as the primary graph store for Atlas because our access patterns are r"
+    },
+    {
+      "id": "doc::arch-update-atlas::chunk-1::5455f8a6f6",
+      "document_id": "doc::arch-update-atlas",
+      "chunk_index": 1,
+      "text": "ted Neo4j as the primary graph store for Atlas because our access patterns are relationship-heavy. We use the neo4j Python driver for all data access. For semantic search we standardised on SentenceTransformers embeddings stored directly in Neo4j vector indexes.\n\nThe team also introduced LangChain to orchestrate the retrieval-augmented generation pipeline. Marcus Feld prototyped the extraction service using the LLMGraphTransformer component.\n\n## Decision Log\n\nDecision D-114: Adopt Neo4j as the s"
+    },
+    {
+      "id": "doc::arch-update-atlas::chunk-2::f4ba397ca5",
+      "document_id": "doc::arch-update-atlas",
+      "chunk_index": 2,
+      "text": "aphTransformer component.\n\n## Decision Log\n\nDecision D-114: Adopt Neo4j as the system of record for the knowledge graph. This decision affects Project Atlas directly and supersedes the earlier PostgreSQL proposal.\n\nDecision D-118: Use SentenceTransformers for embeddings in the near term to avoid external API dependencies, revisiting OpenAI embeddings once the budget is approved. This affects Project Atlas."
+    },
+    {
+      "id": "doc::launch-email-atlas::chunk-0::0b78a0efa3",
+      "document_id": "doc::launch-email-atlas",
+      "chunk_index": 0,
+      "text": "From: Priya Nair <priya.nair@example-corp.com>\nTo: engineering-all@example-corp.com\nSubject: Project Atlas Beta is Live\n\nHi everyone,\n\nI am thrilled to announce that Project Atlas has entered beta. The Platform Team has been working on this for two quarters and it is finally ready for internal users.\n\nAtlas is built on Neo4j and uses LangChain for its Graph RAG pipeline. Marcus Feld and Diana Okoro drove the ingestion and retrieval work respectively. Diana Okoro is our resident expert in Python"
+    },
+    {
+      "id": "doc::launch-email-atlas::chunk-1::f9d557544d",
+      "document_id": "doc::launch-email-atlas",
+      "chunk_index": 1,
+      "text": "n and retrieval work respectively. Diana Okoro is our resident expert in Python and SentenceTransformers, and she tuned the vector search layer.\n\nThe Data Platform Team owns Project Atlas going forward. If you want to contribute, Marcus Feld is coordinating onboarding.\n\nThanks to everyone involved.\n\nBest,\nPriya"
+    },
+    {
+      "id": "doc::issue-atlas-ingestion::chunk-0::2debca82e0",
+      "document_id": "doc::issue-atlas-ingestion",
+      "chunk_index": 0,
+      "text": "Issue: ATLAS-231\nTitle: Ingestion pipeline times out on large PDF batches\nSeverity: High\nStatus: Open\nReporter: Diana Okoro\nAssignee: Marcus Feld\n\nDescription:\nThe Atlas ingestion pipeline times out when processing PDF batches larger than 500 documents. The bottleneck appears to be synchronous embedding generation with SentenceTransformers before writes to Neo4j.\n\nImpact:\nThis issue blocks Project Atlas from reaching general availability, since enterprise customers routinely upload thousands of"
+    },
+    {
+      "id": "doc::issue-atlas-ingestion::chunk-1::8f8253eb19",
+      "document_id": "doc::issue-atlas-ingestion",
+      "chunk_index": 1,
+      "text": "general availability, since enterprise customers routinely upload thousands of PDFs. The Data Platform Team has flagged it as a launch blocker.\n\nProposed fix:\nBatch the embedding calls and write to Neo4j asynchronously. Marcus Feld is investigating a queue-based approach."
+    }
+  ],
+  "stats": {
+    "documents": 3,
+    "chunks": 7,
+    "entities": 13,
+    "relationships": 17,
+    "mentions": 28,
+    "total_nodes": 16,
+    "total_edges": 45
+  }
+}
