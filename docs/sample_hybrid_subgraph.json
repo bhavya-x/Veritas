@@ -1,0 +1,78 @@
+{
+  "_comment": "Illustrative output of HybridRetriever.retrieve(...).to_dict() for the sample dataset. This is the exact structure passed to the RAG generator in Phase 2. Similarity scores are cosine similarity in [0, 1].",
+  "query": "Who is an expert in SentenceTransformers and what does it block?",
+  "entry_chunks": [
+    {
+      "id": "doc::launch-email-atlas::chunk-1::9f2c1a7b04",
+      "text": "Marcus Feld and Diana Okoro drove the ingestion and retrieval work respectively. Diana Okoro is our resident expert in Python and SentenceTransformers, and she tuned the vector search layer.",
+      "score": 0.8912,
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "id": "doc::issue-atlas-ingestion::chunk-0::3ad5e9c218",
+      "text": "The bottleneck appears to be synchronous embedding generation with SentenceTransformers before writes to Neo4j. This issue blocks Project Atlas from reaching general availability.",
+      "score": 0.8437,
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "id": "doc::arch-update-atlas::chunk-1::c71b0f4d92",
+      "text": "For semantic search we standardised on SentenceTransformers embeddings stored directly in Neo4j vector indexes.",
+      "score": 0.8055,
+      "source_doc": "doc::arch-update-atlas"
+    }
+  ],
+  "seed_entities": [
+    { "id": "person::diana-okoro", "name": "Diana Okoro", "label": "Person" },
+    { "id": "person::marcus-feld", "name": "Marcus Feld", "label": "Person" },
+    { "id": "technology::sentencetransformers", "name": "SentenceTransformers", "label": "Technology" },
+    { "id": "project::atlas", "name": "Project Atlas", "label": "Project" },
+    { "id": "issue::atlas-231", "name": "ATLAS-231", "label": "Issue" }
+  ],
+  "triples": [
+    {
+      "head": "Diana Okoro",
+      "head_label": "Person",
+      "relationship": "HAS_SKILL",
+      "tail": "SentenceTransformers",
+      "tail_label": "Technology",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "head": "Diana Okoro",
+      "head_label": "Person",
+      "relationship": "WORKS_ON",
+      "tail": "Project Atlas",
+      "tail_label": "Project",
+      "source_doc": "doc::launch-email-atlas"
+    },
+    {
+      "head": "Project Atlas",
+      "head_label": "Project",
+      "relationship": "USES",
+      "tail": "SentenceTransformers",
+      "tail_label": "Technology",
+      "source_doc": "doc::arch-update-atlas"
+    },
+    {
+      "head": "ATLAS-231",
+      "head_label": "Issue",
+      "relationship": "BLOCKS",
+      "tail": "Project Atlas",
+      "tail_label": "Project",
+      "source_doc": "doc::issue-atlas-ingestion"
+    },
+    {
+      "head": "Marcus Feld",
+      "head_label": "Person",
+      "relationship": "WORKS_ON",
+      "tail": "Project Atlas",
+      "tail_label": "Project",
+      "source_doc": "doc::issue-atlas-ingestion"
+    }
+  ],
+  "stats": {
+    "entry_chunks": 3,
+    "seed_entities": 5,
+    "triples": 5
+  }
+}

@@ -68,6 +68,26 @@ All configuration is environment-driven (see `.env.example`). Key toggles:
 - `VERITAS_EMBEDDING_BACKEND` — `openai` or `sentence_transformers`
 - `VERITAS_EMBEDDING_DIMENSION` — must match the embedding model output
 
+## Verification & Explainability (Section 5)
+
+After ingestion, verify graph connectivity with the queries in
+[`cypher/verification_queries.cypher`](cypher/verification_queries.cypher):
+
+1. **Expert discovery** — people connected to a Technology/Project.
+2. **Impact analysis** — projects affected by an Issue/Decision.
+3. **Provenance** — the exact source Document and Chunk behind any relationship.
+
+A representative hybrid-retrieval payload (the structure handed to the RAG
+generator) is shown in
+[`docs/sample_hybrid_subgraph.json`](docs/sample_hybrid_subgraph.json).
+
+Run the built-in demo query end to end:
+
+```bash
+python run_phase1_ingestion.py \
+  --query "Who is an expert in SentenceTransformers and what does it block?"
+```
+
 ## Requirements
 
 - Python 3.10+
